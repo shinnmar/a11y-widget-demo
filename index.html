@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pets Finder</title>
+  <link rel="stylesheet" href="widget.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:wght@700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #faf9ff;
+      color: #2d2d2d;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: white;
+      box-shadow: 0 2px 16px rgba(124, 92, 191, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #7c5cbf;
+      text-decoration: none;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    nav ul a {
+      text-decoration: none;
+      color: #666;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover {
+      color: #7c5cbf;
+    }
+
+    .nav-cta {
+      background: #7c5cbf;
+      color: white !important;
+      padding: 0.6rem 1.4rem;
+      border-radius: 50px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5rem 3rem 4rem;
+      background: linear-gradient(135deg, #f0eaff 0%, #faf9ff 60%);
+      gap: 3rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '🐾';
+      position: absolute;
+      font-size: 18rem;
+      opacity: 0.04;
+      right: -2rem;
+      top: -2rem;
+      pointer-events: none;
+    }
+
+    .hero-text {
+      max-width: 520px;
+    }
+
+    .hero-text .badge {
+      display: inline-block;
+      background: #ede8f9;
+      color: #7c5cbf;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .hero-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.2rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    /* ⚠️ PROBLEMA INTENCIONAL: bajo contraste */
+    .hero-text .subtitle {
+      color: #bbbbbb;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn-primary {
+      background: #7c5cbf;
+      color: white;
+      border: none;
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 8px 24px rgba(124, 92, 191, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(124, 92, 191, 0.4);
+    }
+
+    /* ⚠️ PROBLEMA INTENCIONAL: botón sin etiqueta */
+    .btn-icon {
+      background: white;
+      border: 2px solid #ede8f9;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .btn-icon:hover {
+      border-color: #7c5cbf;
+    }
+
+    /* ── STATS ── */
+    .stats {
+      display: flex;
+      gap: 0;
+      background: white;
+      border-bottom: 1px solid #f0eaf9;
+    }
+
+    .stat {
+      flex: 1;
+      padding: 2rem 3rem;
+      border-right: 1px solid #f0eaf9;
+    }
+
+    .stat:last-child {
+      border-right: none;
+    }
+
+    .stat h3 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #7c5cbf;
+    }
+
+    /* ⚠️ PROBLEMA INTENCIONAL: bajo contraste */
+    .stat p {
+      color: #cccccc;
+      font-size: 0.85rem;
+      margin-top: 0.2rem;
+    }
+
+    /* ── HERO IMAGE / PET CARD ── */
+    .hero-visual {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .hero-visual .main-img {
+      width: 400px;
+      height: 340px;
+      object-fit: cover;
+      border-radius: 32px;
+      display: block;
+      /* ⚠️ PROBLEMA INTENCIONAL: sin alt en HTML */
+    }
+
+    .pet-card {
+      position: absolute;
+      bottom: -1rem;
+      left: -2rem;
+      background: white;
+      border-radius: 20px;
+      padding: 1rem 1.4rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .pet-card .pet-info p {
+      font-size: 0.7rem;
+      color: #aaa;
+    }
+
+    .pet-card .pet-info h4 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #1a1a2e;
+    }
+
+    .pet-card .adopt-btn {
+      background: #7c5cbf;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+    }
+
+    /* ── GALLERY ── */
+    .gallery {
+      padding: 4rem 3rem;
+      background: #faf9ff;
+    }
+
+    .gallery-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .gallery-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #1a1a2e;
+    }
+
+    /* ⚠️ PROBLEMA INTENCIONAL: link sin contexto */
+    .gallery-header a {
+      color: #7c5cbf;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .pet-tile {
+      border-radius: 20px;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s;
+    }
+
+    .pet-tile:hover {
+      transform: translateY(-4px);
+    }
+
+    /* ⚠️ PROBLEMA INTENCIONAL: imágenes sin alt */
+    .pet-tile img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .pet-tile-info {
+      padding: 1rem;
+    }
+
+    .pet-tile-info h4 {
+      font-weight: 800;
+      color: #1a1a2e;
+    }
+
+    /* ⚠️ PROBLEMA INTENCIONAL: texto diminuto y bajo contraste */
+    .pet-tile-info p {
+      color: #cccccc;
+      font-size: 10px;
+      margin-top: 0.2rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #1a1a2e;
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer span {
+      color: #666;
+      font-size: 0.85rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    /* ⚠️ PROBLEMA INTENCIONAL: links sin contexto */
+    .footer-links a {
+      color: #555;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="#" class="logo">🐾 Pets Finder</a>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About us</a></li>
+      <li><a href="#">Gallery</a></li>
+      <li><a href="#" class="nav-cta">Contact us</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-text">
+      <span class="badge">🐶 Over 1M pets saved</span>
+      <h1>Find your new best friend</h1>
+      <!-- ⚠️ PROBLEMA: bajo contraste -->
+      <p class="subtitle">Let's get started. Search pets from shelters, rescues, and individuals all around the world.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary">Adopt now 🐾</button>
+        <!-- ⚠️ PROBLEMA: sin etiqueta -->
+        <button class="btn-icon">→</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <!-- ⚠️ PROBLEMA: sin alt -->
+      <img class="main-img" src="https://shinnmar.github.io/pets-finder/src/assets/img/pic-kitten.jpeg">
+      <div class="pet-card">
+        <div class="pet-info">
+          <p>Hi! My name is:</p>
+          <h4>Garras 🐱</h4>
+        </div>
+        <button class="adopt-btn">Adopt me</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="stat">
+      <h3>828,037+</h3>
+      <!-- ⚠️ PROBLEMA: bajo contraste -->
+      <p>Rescue dogs saved</p>
+    </div>
+    <div class="stat">
+      <h3>654,824+</h3>
+      <p>Rescue cats saved</p>
+    </div>
+    <div class="stat">
+      <h3>12,400+</h3>
+      <p>Shelters connected</p>
+    </div>
+  </div>
+
+  <section class="gallery">
+    <div class="gallery-header">
+      <h2>Meet our pets</h2>
+      <!-- ⚠️ PROBLEMA: link sin contexto -->
+      <a href="#">Click aquí →</a>
+    </div>
+    <div class="gallery-grid">
+      <div class="pet-tile">
+        <!-- ⚠️ PROBLEMA: sin alt -->
+        <img src="https://shinnmar.github.io/pets-finder/src/assets/img/pic-shih-tzu_.jpeg">
+        <div class="pet-tile-info">
+          <h4>Luna</h4>
+          <!-- ⚠️ PROBLEMA: fuente 10px y bajo contraste -->
+          <p>Shih Tzu · 2 años · Lima</p>
+        </div>
+      </div>
+      <div class="pet-tile">
+        <img src="https://picsum.photos/300/200?random=10">
+        <div class="pet-tile-info">
+          <h4>Max</h4>
+          <p>Labrador · 1 año · Miraflores</p>
+        </div>
+      </div>
+      <div class="pet-tile">
+        <img src="https://picsum.photos/300/200?random=11">
+        <div class="pet-tile-info">
+          <h4>Mochi</h4>
+          <p>Persa · 3 años · Surco</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Pets Finder</span>
+    <div class="footer-links">
+      <!-- ⚠️ PROBLEMA: sin contexto -->
+      <a href="#">Click aquí</a>
+      <a href="#">Leer más</a>
+      <a href="#">→</a>
+    </div>
+  </footer>
+
+  <script src="widget.js"></script>
+</body>
+
+</html>
